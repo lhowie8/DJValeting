@@ -8,9 +8,11 @@
     <div class="col-lg-9">
         <h1>Create a new booking</h1>
     </div>
+     <AuthorizeView>
         <div class="col-lg-3 text-right">
             <a class="btn btn-secondary btn-sm" href="/bookings" role="button">Go Back To Bookings</a>
         </div>
+    </AuthorizeView>
 </div>
 
 @if (Booking != null)
@@ -68,9 +70,12 @@
 }
 
 @code {
-        /// <summary>
-        /// Current form booking object
-        /// </summary>
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationStateTask { get; set; }
+    /// <summary>
+    /// Current form booking object
+    /// </summary>
     public Booking? Booking { get; set; }
 
     /// <summary>
@@ -103,8 +108,18 @@
     {
         if (Booking != null)
         {
+            bool authorised = false;
+            if (authenticationStateTask != null)
+            {
+                var authenticationState = await authenticationStateTask;
+                if (authenticationState.User.Identity != null)
+                    authorised = authenticationState.User.Identity.IsAuthenticated;
+            }
             await BookingService.CreateBooking(Booking);
-            NavigationManager.NavigateTo("/Bookings");
+            if (!authorised)
+                NavigationManager.NavigateTo("/Bookings/create", true);
+            else
+                NavigationManager.NavigateTo("/Bookings");
         }
     }
   }

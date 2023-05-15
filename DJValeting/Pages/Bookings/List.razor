@@ -11,7 +11,7 @@
 </div>
 @if (Bookings != null && Bookings.Count > 0)
 {
-    <table class="table table-bordered table-striped table-sm">
+    <table class="table table-bordered table-striped table-sm" style="margin-top: 20px">
         <thead>
             <tr>
                 <th>Name</th>
@@ -27,7 +27,7 @@
         <tbody>
             @foreach (var item in Bookings)
             {
-                <tr>
+                <tr style="@getGreenStyleForRow(item.Approved)">
                     <td>@item.Name</td>
                     <td>@item.BookingDate</td>
                     <td>@item.Flexibility?.Name</td>
@@ -47,7 +47,7 @@
     </table>
  }
 
- @code {
+@code {
     List<Booking>? Bookings { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -65,6 +65,11 @@
         Bookings = b.ToList();
     }
 
+    /// <summary>
+    /// Sets a booking to approved
+    /// </summary>
+    /// <param name="booking"></param>
+    /// <returns></returns>
     protected async Task ApproveBooking(Booking booking)
     {
         booking.Approved = !booking.Approved;
@@ -76,7 +81,11 @@
          });
 
     }
-
+    /// <summary>
+    /// Deletes a booking
+    /// </summary>
+    /// <param name="booking"></param>
+    /// <returns></returns>
     protected async Task DeleteBooking(Booking booking)
     {
         await BookingService.DeleteBooking(booking);
@@ -86,6 +95,18 @@
              StateHasChanged();
          });
 
+    }
+    /// <summary>
+    /// Changes style background colour to green based on a bool
+    /// </summary>
+    /// <param name="approved"></param>
+    /// <returns></returns>
+    private string getGreenStyleForRow(bool getStyle)
+    {
+        if (getStyle)
+            return "background-color:green";
+        else
+            return "";
     }
 
 }
