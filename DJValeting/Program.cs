@@ -1,5 +1,6 @@
 using DJValeting.Areas.Identity;
 using DJValeting.Data;
+using DJValeting.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -23,7 +24,11 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+//Add identity, booking, felxibility and vehicle services as scoped
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IFlexibilityService, FlexibilityService>();
+builder.Services.AddScoped<IVehicleSizeService, VehicleSizeService>();
 
 var app = builder.Build();
 
