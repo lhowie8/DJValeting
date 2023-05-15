@@ -2,6 +2,7 @@
 @inject IBookingService BookingService;
 @inject IFlexibilityService FlexibilityService;
 @inject IVehicleSizeService VehicleSizeService;
+@inject NavigationManager NavigationManager;
 <div class="row">
     <div class="col-lg-9">
         <h1>Create a new booking</h1>
@@ -64,9 +65,9 @@
     </EditForm>
 }
 @code {
-    /// <summary>
-    /// Current form booking object
-    /// </summary>
+        /// <summary>
+        /// Current form booking object
+        /// </summary>
     public Booking? Booking { get; set; }
 
     /// <summary>
@@ -97,5 +98,10 @@
     /// </summary>
     private async void SubmitBooking()
     {
+        if (Booking != null)
+        {
+            await BookingService.CreateBooking(Booking);
+            NavigationManager.NavigateTo("/Bookings");
+        }
     }
- }
+  }
