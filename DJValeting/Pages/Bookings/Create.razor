@@ -13,7 +13,7 @@
 </div>
 @if (Booking != null)
 {
-    <EditForm Model="@Booking" OnValidSubmit="@SubmitBooking">
+    <EditForm Model="@Booking" OnValidSubmit="@submitBooking">
         <DataAnnotationsValidator />
         <div class="form-group" style="margin-top: 20px">
             <label>Booking Name</label>
@@ -96,7 +96,7 @@
     /// <summary>
     /// Submit a new booking
     /// </summary>
-    private async void SubmitBooking()
+    private async void submitBooking()
     {
         if (Booking != null)
         {

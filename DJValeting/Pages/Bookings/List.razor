@@ -10,5 +10,21 @@
     </div>
 </div>
 @code {
+    List<Booking>? Bookings { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await getBookings();
+    }
+
+    /// <summary>
+    /// Gets current bookings from database
+    /// </summary>
+    /// <returns></returns>
+    private async Task getBookings()
+    {
+        var b = await BookingService.GetBookings();
+        Bookings = b.ToList();
+    }
 
 }
