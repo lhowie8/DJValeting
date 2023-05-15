@@ -25,11 +25,11 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Bookings)
+            @foreach (var item in Bookings.OrderBy(x=>x.BookingDate))
             {
                 <tr style="@getGreenStyleForRow(item.Approved)">
                     <td>@item.Name</td>
-                    <td>@item.BookingDate</td>
+                    <td>@item.BookingDate.Date.ToShortDateString()</td>
                     <td>@item.Flexibility?.Name</td>
                     <td>@item.VehicleSize?.Name</td>
                     <td>@item.ContactNumber</td>
@@ -108,5 +108,7 @@
         else
             return "";
     }
+
+  
 
 }
