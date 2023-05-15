@@ -9,7 +9,39 @@
         <a class="btn btn-success btn-sm" href="/Bookings/create" role="button">Create New</a>
     </div>
 </div>
-@code {
+@if (Bookings != null && Bookings.Count > 0)
+{
+    <table class="table table-bordered table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Booking Date</th>
+                <th>Flexibility</th>
+                <th>Vehicle Size</th>
+                <th>Contact Number</th>
+                <th>Email Address</th>
+                <th>Approved</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Bookings)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.BookingDate</td>
+                    <td>@item.Flexibility?.Name</td>
+                    <td>@item.VehicleSize?.Name</td>
+                    <td>@item.ContactNumber</td>
+                    <td>@item.EmailAddress</td>
+                    <td>@item.Approved</td>
+                </tr>
+            }
+
+             </tbody>
+    </table>
+ }
+            @code {
     List<Booking>? Bookings { get; set; }
 
     protected override async Task OnInitializedAsync()
