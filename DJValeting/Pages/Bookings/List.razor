@@ -35,6 +35,11 @@
                     <td>@item.ContactNumber</td>
                     <td>@item.EmailAddress</td>
                     <td>@item.Approved</td>
+                    <td class="text-right">
+                        <a class="btn btn-primary btn-sm" @onclick="@(async () => await ApproveBooking(item))" role="button">Approve</a>
+                        <a class="btn btn-secondary btn-sm" href="/bookings/edit/@item.Id" role="button">Edit</a>
+                        <button class="btn btn-danger btn-sm" @onclick="@(async () => await DeleteBooking(item))" role="button">Delete</button>
+                    </td>
                 </tr>
             }
 
@@ -58,6 +63,29 @@
     {
         var b = await BookingService.GetBookings();
         Bookings = b.ToList();
+    }
+
+    protected async Task ApproveBooking(Booking booking)
+    {
+        booking.Approved = !booking.Approved;
+        await BookingService.UpdateBooking(booking);
+        await getBookings();
+        await InvokeAsync(() =>
+         {
+             StateHasChanged();
+         });
+
+    }
+
+    protected async Task DeleteBooking(Booking booking)
+    {
+        await BookingService.DeleteBooking(booking);
+        await getBookings();
+        await InvokeAsync(() =>
+         {
+             StateHasChanged();
+         });
+
     }
 
 }
