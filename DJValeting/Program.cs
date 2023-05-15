@@ -10,9 +10,14 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+
+//Get connection strings
+var identityConnectionString = builder.Configuration.GetConnectionString("IdentityConnection") ?? throw new InvalidOperationException("Connection string 'IdentityConnection' not found.");
+var businessConnectionString = builder.Configuration.GetConnectionString("BusinessConnection") ?? throw new InvalidOperationException("Connection string 'BusinessConnection' not found.");
+//Add connection strings to db context
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(identityConnectionString));
+builder.Services.AddDbContext<BusinessDbContext>(options => options.UseSqlServer(businessConnectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
