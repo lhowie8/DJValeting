@@ -11,5 +11,25 @@
         </div>
 </div>
 @code {
+    public Booking? Booking { get; set; }
 
+    public List<Flexibility>? Flexibilities { get; set; }
+
+    public List<VehicleSize>? VehicleSizes { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        //Create new booking object for use on the page
+        Booking = new Booking();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Get lists of flexibilities and vehicles
+        var f = await FlexibilityService.GetFlexibilityList();
+        var v = await VehicleSizeService.GetVehicleSizeList();
+        Flexibilities = f.ToList();
+        VehicleSizes = v.ToList();
+    }
 }
