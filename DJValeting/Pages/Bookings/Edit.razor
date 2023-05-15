@@ -1,4 +1,7 @@
-﻿<h3>Edit</h3>
+﻿@page "/bookings/edit/{id:int}"
+@inject IBookingService BookingService;
+@inject IFlexibilityService FlexibilityService;
+@inject IVehicleSizeService VehicleSizeService;
 
 @code {
 

@@ -1,5 +1,14 @@
-﻿<h3>List</h3>
-
+﻿@page "/Bookings"
+@page "/Bookings/list"
+@inject IBookingService BookingService;
+<div class="row">
+    <div class="col-lg-9">
+        <h1>Bookings</h1>
+    </div>
+    <div class="col-lg-3 text-right">
+        <a class="btn btn-success btn-sm" href="/Bookings/create" role="button">Create New</a>
+    </div>
+</div>
 @code {
 
 }
