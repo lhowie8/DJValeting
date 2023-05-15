@@ -2,6 +2,69 @@
 @inject IBookingService BookingService;
 @inject IFlexibilityService FlexibilityService;
 @inject IVehicleSizeService VehicleSizeService;
+@inject NavigationManager NavigationManager;
+
+@if (Booking != null)
+{
+    <div class="row">
+        <div class="col-lg-9">
+            <h1>@Booking.Name</h1>
+        </div>
+        <div class="col-lg-3 text-right">
+            <a class="btn btn-secondary btn-sm" href="/bookings" role="button">Go Back To Bookings</a>
+        </div>
+    </div>
+
+      <EditForm Model="@Booking" OnValidSubmit="@submitBooking">
+        <DataAnnotationsValidator />
+        <div class="form-group" style="margin-top: 20px">
+            <label>Booking Name</label>
+            <InputText class="form-control" @bind-Value="Booking.Name" />
+            <ValidationMessage For=@(() => Booking.Name) />
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <label>Booking Date</label>
+            <InputDate class="form-control" @bind-Value="Booking.BookingDate" />
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <label>Flexibility</label>
+            <InputSelect @bind-Value="Booking.FlexibilityId" class="form-control">
+                @if (Flexibilities != null)
+                {
+                    @foreach (var flexibility in Flexibilities)
+                    {
+                        <option value="@flexibility.FlexibilityId">@flexibility.Name</option>
+                    }
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <label>Flexibility</label>
+            <InputSelect @bind-Value="Booking.VehicleSizeId" class="form-control">
+                @if (VehicleSizes != null)
+                {
+                    @foreach (var vehicleSize in VehicleSizes)
+                    {
+                        <option value="@vehicleSize.VehicleSizeId">@vehicleSize.Name</option>
+                    }
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <label>Contact Number</label>
+            <InputText class="form-control" @bind-Value="Booking.ContactNumber" />
+            <ValidationMessage For=@(() => Booking.ContactNumber) />
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <label>Email Address</label>
+            <InputText class="form-control" @bind-Value="Booking.EmailAddress" />
+            <ValidationMessage For=@(() => Booking.EmailAddress) />
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </EditForm>
+}
 
 @code {
     [Parameter]
@@ -19,5 +82,14 @@
         var v = await VehicleSizeService.GetVehicleSizeList();
         Flexibilities = f.ToList();
         VehicleSizes = v.ToList();
+    }
+
+    private async void submitBooking()
+    {
+        if (Booking != null)
+        {
+            await BookingService.UpdateBooking(Booking);
+            NavigationManager.NavigateTo("/Bookings");
+        }
     }
 }
