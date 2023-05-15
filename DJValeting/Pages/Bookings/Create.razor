@@ -10,11 +10,72 @@
             <a class="btn btn-secondary btn-sm" href="/bookings" role="button">Go Back To Bookings</a>
         </div>
 </div>
+@if (Booking != null)
+{
+    <EditForm Model="@Booking" OnValidSubmit="@SubmitBooking">
+        <DataAnnotationsValidator />
+        <div class="form-group" style="margin-top: 20px">
+            <label>Booking Name</label>
+            <InputText class="form-control" @bind-Value="Booking.Name" />
+            <ValidationMessage For=@(() => Booking.Name) />
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <label>Booking Date</label>
+            <InputDate class="form-control" @bind-Value="Booking.BookingDate" />
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <label>Flexibility</label>
+            <InputSelect @bind-Value="Booking.FlexibilityId" class="form-control">
+                @if (Flexibilities != null)
+                {
+                    @foreach (var flexibility in Flexibilities)
+                    {
+                        <option value="@flexibility.FlexibilityId">@flexibility.Name</option>
+                    }
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <label>Flexibility</label>
+            <InputSelect @bind-Value="Booking.VehicleSizeId" class="form-control">
+                @if (VehicleSizes != null)
+                {
+                    @foreach (var vehicleSize in VehicleSizes)
+                    {
+                        <option value="@vehicleSize.VehicleSizeId">@vehicleSize.Name</option>
+                    }
+                }
+
+            </InputSelect>
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <label>Contact Number</label>
+            <InputText class="form-control" @bind-Value="Booking.ContactNumber" />
+            <ValidationMessage For=@(() => Booking.ContactNumber) />
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <label>Email Address</label>
+            <InputText class="form-control" @bind-Value="Booking.EmailAddress" />
+            <ValidationMessage For=@(() => Booking.EmailAddress) />
+        </div>
+        <div class="form-group" style="margin-top: 20px">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </EditForm>
+}
 @code {
+    /// <summary>
+    /// Current form booking object
+    /// </summary>
     public Booking? Booking { get; set; }
 
+    /// <summary>
+    /// List of Flexibilities
+    /// </summary>
     public List<Flexibility>? Flexibilities { get; set; }
-
+    /// <summary>
+    /// List of Vehcile Sizes
+    /// </summary>
     public List<VehicleSize>? VehicleSizes { get; set; }
 
     protected override void OnInitialized()
@@ -23,7 +84,6 @@
         //Create new booking object for use on the page
         Booking = new Booking();
     }
-
     protected override async Task OnInitializedAsync()
     {
         //Get lists of flexibilities and vehicles
@@ -32,4 +92,10 @@
         Flexibilities = f.ToList();
         VehicleSizes = v.ToList();
     }
-}
+    /// <summary>
+    /// Submit a new booking
+    /// </summary>
+    private async void SubmitBooking()
+    {
+    }
+ }
